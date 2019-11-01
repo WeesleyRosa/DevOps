@@ -138,14 +138,18 @@ public class ServiceHandler {
 
 	@GET
 	@Produces("application/json; charset=UTF-8")
-	@Path("/getCat/{id}")
-	public CatPOJO GetCat(@PathParam("id") Integer id) {
+	@Path("/{entitysName}/{id}")
+	public Object GetCat(@PathParam("entitysName") String entitysName, @PathParam("id") Integer id) {
 
-		Cat entity = persistCat.GetById(id);
+		Object entity = genericHandler.GetById(id, entitysName);
 
-		if (entity != null)
-			return new CatPOJO(entity.getId(), entity.getAge(), entity.getName(), entity.getSex());
+		if (entity != null && entitysName.toLowerCase() == "cat")
+			return new CatPOJO(((Cat) entity).getId(), ((Cat) entity).getAge(), ((Cat) entity).getName(),
+					((Cat) entity).getSex());
 
+		if (entity != null && entitysName.toLowerCase() == "dog")
+			return new DogPOJO(((Dog) entity).getId(), ((Dog) entity).getAge(), ((Dog) entity).getName(),
+					((Dog) entity).getSex());
 		return null;
 	}
 
