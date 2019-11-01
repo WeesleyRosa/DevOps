@@ -18,12 +18,14 @@ import br.wesley.http.CatPOJO;
 import br.wesley.http.DogPOJO;
 import br.wesley.persistence.CatPersist;
 import br.wesley.persistence.DogPersist;
+import br.wesley.persistence.GenericPersist;
 
 @Path("/service")
 public class ServiceHandler {
 
 	private final CatPersist persistCat = new CatPersist();
 	private final DogPersist persistDog = new DogPersist();
+	private final GenericPersist genericHandler = new GenericPersist();
 
 	@POST
 	@Consumes("application/json; charset=UTF-8")
@@ -40,19 +42,19 @@ public class ServiceHandler {
 				((Dog) entity).setAge(((DogPOJO) pojo).getAge());
 				((Dog) entity).setName(((DogPOJO) pojo).getName());
 				((Dog) entity).setSex(((DogPOJO) pojo).getSex());
-				
+
 				persistDog.post((Dog) entity);
 			}
 
 			else if (pojo instanceof CatPOJO) {
-				
+
 				((Cat) entity).setAge(((CatPOJO) pojo).getAge());
 				((Cat) entity).setName(((CatPOJO) pojo).getName());
 				((Cat) entity).setSex(((CatPOJO) pojo).getSex());
-				
+
 				persistCat.post((Cat) entity);
 			}
-			
+
 			else
 				return "Objeto não identificado";
 
@@ -80,19 +82,19 @@ public class ServiceHandler {
 				((Dog) entity).setAge(((DogPOJO) pojo).getAge());
 				((Dog) entity).setName(((DogPOJO) pojo).getName());
 				((Dog) entity).setSex(((DogPOJO) pojo).getSex());
-				
+
 				persistDog.post((Dog) entity);
 			}
 
 			else if (pojo instanceof CatPOJO) {
-				
+
 				((Cat) entity).setAge(((CatPOJO) pojo).getAge());
 				((Cat) entity).setName(((CatPOJO) pojo).getName());
 				((Cat) entity).setSex(((CatPOJO) pojo).getSex());
-				
+
 				persistCat.post((Cat) entity);
 			}
-			
+
 			else
 				return "Objeto não identificado";
 
@@ -108,19 +110,30 @@ public class ServiceHandler {
 
 	@GET
 	@Produces("application/json; charset=UTF-8")
-	@Path("/listAll")
-	public List<Object> listAll() {
+	@Path("/listAll/{entitysName}")
+	public List<Object> listAll(@PathParam("entitysName") String entitysName) {
 
 		List<Object> pojos = new ArrayList<Object>();
 
-		List<Cat> listaEntityCat = persistCat.getAll();
+		List<Object> listEntity = genericHandler.getAll(entitysName);
 
-		for (Cat entity : listaEntityCat) {
+		if (listEntity instanceof Cat) {
+			for (Object singleObject : listEntity) {
 
-			cats.add(new CatPOJO(entity.getId(), entity.getAge(), entity.getName(), entity.getSex()));
+				pojos.add(new CatPOJO(((Cat) singleObject).getId(), ((Cat) singleObject).getAge(),
+						((Cat) singleObject).getName(), ((Cat) singleObject).getSex()));
+			}
+			return pojos;
 		}
 
-		return cats;
+		else if (listEntity instanceof Dog) {
+			for (Object singleObject : listEntity) {
+				pojos.add(new DogPOJO(((Dog) singleObject).getId(), ((Dog) singleObject).getAge(),
+						((Dog) singleObject).getName(), ((Dog) singleObject).getSex()));
+			}
+			return pojos;
+		}
+		return null;
 	}
 
 	@GET
