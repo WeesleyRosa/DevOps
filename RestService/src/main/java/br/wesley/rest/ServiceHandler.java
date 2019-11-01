@@ -13,31 +13,48 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 
 import br.wesley.entity.Cat;
+import br.wesley.entity.Dog;
 import br.wesley.http.CatPOJO;
+import br.wesley.http.DogPOJO;
 import br.wesley.persistence.CatPersist;
-
+import br.wesley.persistence.DogPersist;
 
 @Path("/service")
 public class ServiceHandler {
 
 	private final CatPersist persistCat = new CatPersist();
-
+	private final DogPersist persistDog = new DogPersist();
 
 	@POST
 	@Consumes("application/json; charset=UTF-8")
 	@Produces("application/json; charset=UTF-8")
 	@Path("/add")
-	public String add(CatPOJO catPojo) {
+	public String add(Object pojo) {
 
-		Cat entity = new Cat();
+		Object entity = new Object();
 
 		try {
 
-			entity.setAge(catPojo.getAge());
-			entity.setName(catPojo.getName());
-			entity.setSex(catPojo.getSex());
+			if (pojo instanceof DogPOJO) {
 
-			persistCat.post(entity);
+				((Dog) entity).setAge(((DogPOJO) pojo).getAge());
+				((Dog) entity).setName(((DogPOJO) pojo).getName());
+				((Dog) entity).setSex(((DogPOJO) pojo).getSex());
+				
+				persistDog.post((Dog) entity);
+			}
+
+			else if (pojo instanceof CatPOJO) {
+				
+				((Cat) entity).setAge(((CatPOJO) pojo).getAge());
+				((Cat) entity).setName(((CatPOJO) pojo).getName());
+				((Cat) entity).setSex(((CatPOJO) pojo).getSex());
+				
+				persistCat.post((Cat) entity);
+			}
+			
+			else
+				return "Objeto não identificado";
 
 			return "Registro cadastrado com sucesso!";
 
@@ -48,22 +65,36 @@ public class ServiceHandler {
 
 	}
 
-
 	@PUT
 	@Produces("application/json; charset=UTF-8")
 	@Consumes("application/json; charset=UTF-8")
 	@Path("/put")
-	public String put(CatPOJO catPojo) {
+	public String put(Object pojo) {
 
-		Cat entity = new Cat();
+		Object entity = new Object();
 
 		try {
 
-			entity.setAge(catPojo.getAge());
-			entity.setName(catPojo.getName());
-			entity.setSex(catPojo.getSex());
+			if (pojo instanceof DogPOJO) {
 
-			persistCat.put(entity);
+				((Dog) entity).setAge(((DogPOJO) pojo).getAge());
+				((Dog) entity).setName(((DogPOJO) pojo).getName());
+				((Dog) entity).setSex(((DogPOJO) pojo).getSex());
+				
+				persistDog.post((Dog) entity);
+			}
+
+			else if (pojo instanceof CatPOJO) {
+				
+				((Cat) entity).setAge(((CatPOJO) pojo).getAge());
+				((Cat) entity).setName(((CatPOJO) pojo).getName());
+				((Cat) entity).setSex(((CatPOJO) pojo).getSex());
+				
+				persistCat.post((Cat) entity);
+			}
+			
+			else
+				return "Objeto não identificado";
 
 			return "Registro alterado com sucesso!";
 
@@ -75,13 +106,12 @@ public class ServiceHandler {
 
 	}
 
-
 	@GET
 	@Produces("application/json; charset=UTF-8")
 	@Path("/listAll")
-	public List<CatPOJO> listAll() {
+	public List<Object> listAll() {
 
-		List<CatPOJO> cats = new ArrayList<CatPOJO>();
+		List<Object> pojos = new ArrayList<Object>();
 
 		List<Cat> listaEntityCat = persistCat.getAll();
 
@@ -105,7 +135,6 @@ public class ServiceHandler {
 
 		return null;
 	}
-
 
 	@DELETE
 	@Produces("application/json; charset=UTF-8")

@@ -20,10 +20,10 @@ public class Dog {
 	private long id;
 
 	@Column(name = "AGE")
-	private int AGE;
+	private int age;
 
 	@Column(name = "SEX", length = 6)
-	private String SEX;
+	private String sex;
 	
 	@Column(name = "NAME", length = 100)
 	private String name;
