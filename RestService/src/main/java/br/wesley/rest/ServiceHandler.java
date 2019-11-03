@@ -155,12 +155,12 @@ public class ServiceHandler {
 
 	@DELETE
 	@Produces("application/json; charset=UTF-8")
-	@Path("/delete/{id}")
-	public String delete(@PathParam("id") Integer id) {
+	@Path("/delete/{entitysName}/{id}")
+	public String delete(@PathParam("id") Integer id, @PathParam("entitysName") String entitysName) {
 
 		try {
 
-			persistCat.delete(id);
+			genericHandler.delete(id, entitysName);
 
 			return "Registro excluido com sucesso!";
 
