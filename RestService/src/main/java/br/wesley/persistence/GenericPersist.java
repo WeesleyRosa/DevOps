@@ -43,28 +43,17 @@ public class GenericPersist {
 
 	public Object GetById(long id, String entitysName) {
 
-		// String query = "SELECT p FROM " + entitysName.toUpperCase() + "S" + "
-		// p ORDER BY p.ID";
 		String query = "SELECT * FROM" + entitysName.toUpperCase() + "S WHERE ID =" + id;
 
 		return this.entityManager.createNativeQuery(query);
 
-		// return this.entityManager.find(entityClass, id);
 	}
 
 	public void delete(long id, String entitysName) {
 
-		//Object object = this.GetById(id, entitysName);
-
 		String query = "DELETE FROM" + entitysName.toUpperCase() + "S WHERE ID =" + id;
 
 		this.entityManager.createNativeQuery(query);
-
-//		return "Deleted object from table = " + entitysName + " and id = " + id;
-
-//		this.entityManager.getTransaction().begin();
-//		this.entityManager.remove(object);
-//		this.entityManager.getTransaction().commit();
 
 	}
 }
