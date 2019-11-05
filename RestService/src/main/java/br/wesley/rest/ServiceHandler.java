@@ -16,15 +16,12 @@ import br.wesley.entity.Cat;
 import br.wesley.entity.Dog;
 import br.wesley.http.CatPOJO;
 import br.wesley.http.DogPOJO;
-import br.wesley.persistence.CatPersist;
-import br.wesley.persistence.DogPersist;
 import br.wesley.persistence.GenericPersist;
 
 @Path("/service")
 public class ServiceHandler {
 
-	private final CatPersist persistCat = new CatPersist();
-	private final DogPersist persistDog = new DogPersist();
+
 	private final GenericPersist genericHandler = new GenericPersist();
 
 	@POST
@@ -43,7 +40,7 @@ public class ServiceHandler {
 				((Dog) entity).setName(((DogPOJO) pojo).getName());
 				((Dog) entity).setSex(((DogPOJO) pojo).getSex());
 
-				persistDog.post((Dog) entity);
+				genericHandler.post((Dog) entity);
 			}
 
 			else if (pojo instanceof CatPOJO) {
@@ -52,7 +49,7 @@ public class ServiceHandler {
 				((Cat) entity).setName(((CatPOJO) pojo).getName());
 				((Cat) entity).setSex(((CatPOJO) pojo).getSex());
 
-				persistCat.post((Cat) entity);
+				genericHandler.post((Cat) entity);
 			}
 
 			else
@@ -83,7 +80,7 @@ public class ServiceHandler {
 				((Dog) entity).setName(((DogPOJO) pojo).getName());
 				((Dog) entity).setSex(((DogPOJO) pojo).getSex());
 
-				persistDog.post((Dog) entity);
+				genericHandler.post((Dog) entity);
 			}
 
 			else if (pojo instanceof CatPOJO) {
@@ -92,7 +89,7 @@ public class ServiceHandler {
 				((Cat) entity).setName(((CatPOJO) pojo).getName());
 				((Cat) entity).setSex(((CatPOJO) pojo).getSex());
 
-				persistCat.post((Cat) entity);
+				genericHandler.post((Cat) entity);
 			}
 
 			else
